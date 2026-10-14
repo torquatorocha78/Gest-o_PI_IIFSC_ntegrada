@@ -56,7 +56,7 @@ def _endpoint(table: str = SUPABASE_TABLE) -> str:
 
 
 def _supabase_error(response: requests.Response) -> str:
-    try:
+    try: 
         detalhe = response.json()
     except Exception:
         detalhe = response.text
@@ -512,8 +512,8 @@ def atualizar_status_anuidade(
             "numero_anuidade": int(numero_anuidade),
             "status": novo_status,
             "data_pagamento": data_iso if novo_status == "pago" else None,
-            # Campos utilizados pelo relatório anual FORMICT.
-            "ano_pagamento": int(data_iso[:4]) if data_iso and novo_status == "pago" else None,
+            # Não enviar ano_pagamento: essa coluna não existe em public.anuidades.
+            # O ano do pagamento deve ser derivado de data_pagamento no relatório FORMICT.
         }
         if valor_pagamento is not None and novo_status == "pago":
             payload["valor"] = float(valor_pagamento)
